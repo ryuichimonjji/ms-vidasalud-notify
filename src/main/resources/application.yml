@@ -1,0 +1,32 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: ms-vidasalud-notify
+  rabbitmq:
+    host: ${rabbitmq.host}
+    port: ${rabbitmq.port}
+    username: ${rabbitmq.username}
+    password: ${rabbitmq.password}
+    listener:
+      simple:
+        acknowledge-mode: manual
+        default-requeue-rejected: false
+
+rabbitmq:
+  exchange: vidasalud.appointments.exchange
+  queue:
+    notify: vidasalud.notify.queue
+  routing-key:
+    created: appointment.created
+    status-changed: appointment.status.changed
+  dlx: vidasalud.appointments.dlx
+  dlq: vidasalud.notify.dlq
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
+  logging:
+  level:
+    org.springframework.amqp.rabbit.core.RabbitAdmin: DEBUG
